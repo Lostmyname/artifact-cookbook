@@ -64,25 +64,9 @@ def load_current_resource
       @artifact_location = "#{artifact.group_id}:#{artifact.artifact_id}:#{artifact.extension}:#{artifact.classifier}:#{artifact_version}"
     end
   elsif Chef::Artifact.from_s3?(@new_resource.artifact_location)
-    unless Chef::Artifact.windows?
-      case node['platform_family']
-      when 'debian'
-        nokogiri_requirements = %W{gcc make libxml2 libxslt1.1 libxml2-dev libxslt1-dev}
-      when 'rhel'
-        nokogiri_requirements = %W{gcc make libxml2 libxslt libxml2-devel libxslt-devel patch}
-      else
-        Chef::Log.warn "Watch out, you might not be able to install the nokogiri gem!"
-      end
-
-      nokogiri_requirements.each do |nokogiri_requirement|
-        package nokogiri_requirement do
-          action :nothing
-        end.run_action(:install)
-      end
-    end
-
     chef_gem "aws-sdk" do
-      version "1.29.0"
+      version "2.1.32"
+      action :install
     end
 
     @artifact_version = @new_resource.version

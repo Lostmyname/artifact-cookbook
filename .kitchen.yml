@@ -25,3 +25,10 @@ suites:
   attributes:
     artifact_test:
       file_url: "com.test:mytest:1.0.0:tgz"
+- name: s3-file
+  run_list: ["recipe[artifact_test]"]
+  attributes:
+    artifact_test:
+      version: "1.2.3"
+      location: "s3://s3-us-east-1.amazonaws.com/bucket/path/to/file.tgz"
+      deploy_to: "1.2.3"
